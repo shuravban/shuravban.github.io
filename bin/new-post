@@ -1,0 +1,30 @@
+#!/bin/sh
+
+posts=$(dirname $(dirname $(realpath "$0")))/_posts
+
+date=$(date +%F)
+
+datetime=$(date +'%F %T %:::z')
+
+title="$1"
+
+norm_title=$(echo "$1" | sed 's/ /-/g')
+
+file=$posts/$date-$norm_title.markdown
+
+shift
+
+tags="$*"
+
+cat <<END >$file
+---
+layout: post
+title:  $title
+date:   $datetime
+tags:   $tags
+---
+
+
+END
+
+exec vim + $file
