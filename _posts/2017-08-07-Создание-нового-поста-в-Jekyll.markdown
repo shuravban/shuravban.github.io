@@ -1,0 +1,41 @@
+---
+layout: post
+title:  Создание нового поста в Jekyll
+date:   2017-08-07 21:01:24 +06
+tags:   shell jekyll
+---
+
+Нет. Я все-таки обманул. Дважды. Во-первых, свой первый пост я удалять не буду, а во-вторых второй пост дает миру замечательный скрипт, с помощью которого можно создавать новые записи. Ну то есть посты. Вот он:
+
+{% highlight shell %}
+#!/bin/sh
+
+posts=$(dirname $(dirname $(realpath "$0")))/_posts
+
+date=$(date +%F)
+
+datetime=$(date +'%F %T %:::z')
+
+title="$1"
+
+norm_title=$(echo "$1" | sed 's/ /-/g')
+
+file=$posts/$date-$norm_title.markdown
+
+shift
+
+tags="$*"
+
+cat <<END >$file
+---
+layout: post
+title:  $title
+date:   $datetime
+tags:   $tags
+---
+
+
+END
+
+exec vim + $file
+{% endhighlight %}
