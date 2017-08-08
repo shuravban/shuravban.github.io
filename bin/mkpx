@@ -11,7 +11,7 @@ import sys, re, fileinput
 import glob, fnmatch, os, os.path, tempfile, shutil
 import time, datetime, sqlite3, json
 
-import tweepy
+# import tweepy
 
 from boot import api
 
