@@ -5,7 +5,7 @@ cat <<END >"$1"
 
 import sys, re, fileinput
 import glob, fnmatch, os, os.path, tempfile, shutil
-import sqlite, json
+import time, datetime, sqlite, json
 
 import tweepy
 
