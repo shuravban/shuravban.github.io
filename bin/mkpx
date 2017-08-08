@@ -9,7 +9,7 @@ cat <<END >"$script"
 
 import sys, re, fileinput
 import glob, fnmatch, os, os.path, tempfile, shutil
-import time, datetime, sqlite, json
+import time, datetime, sqlite3, json
 
 import tweepy
 
