@@ -1,6 +1,10 @@
 #!/bin/sh
 
-cat <<END >"$1"
+[ $# -ne 1 ] && echo 'Usage: mkpx SCRIPT' >&1 && exit 1
+
+script="$1.py"
+
+cat <<END >"$script"
 #!/usr/bin/python3
 
 import sys, re, fileinput
@@ -12,6 +16,6 @@ import tweepy
 from boot import api
 
 END
-chmod +x "$1"
+chmod +x "$script"
 
-vim + "$1" 
+vim + "$script" 
