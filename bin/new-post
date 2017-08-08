@@ -8,7 +8,8 @@ datetime=$(date +'%F %T %:::z')
 
 title="$1"
 
-norm_title=$(echo "$1" | sed 's/ /-/g')
+# needs my utilities and GNU sed
+norm_title=$(echo "$1" | sed 's/ /-/g; s/[.,;:!?"'"'"']//g' | downcase | translit)
 
 file=$posts/$date-$norm_title.markdown
 
