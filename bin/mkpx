@@ -15,6 +15,7 @@ import tweepy
 
 from boot import api
 
+
 END
 chmod +x "$script"
 
