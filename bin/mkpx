@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cat <<END >"$1"
+#!/usr/bin/python3
+
+import sys, re, fileinput
+import glob, fnmatch, os, os.path, tempfile, shutil
+import sqlite, json
+
+import tweepy
+
+from boot import api
+
+END
+chmod +x "$1"
+
+vim + "$1" 
