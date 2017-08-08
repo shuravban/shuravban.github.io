@@ -19,7 +19,9 @@ tags:   web jekyll
 {% endraw %}
 {% endhighlight %}
 
-Заодно и как liquid шаблоны в тексте показывать узнал. А билдить перед отправкой на github будем так:
+Заодно и как liquid шаблоны в тексте показывать узнал. 
+
+А билдить перед отправкой на github будем так:
 
     JEKYLL_ENV=production jekyll build
 
