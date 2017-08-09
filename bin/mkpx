@@ -2,7 +2,8 @@
 
 [ $# -ne 1 ] && echo 'Usage: mkpx SCRIPT' >&1 && exit 1
 
-script="$1.py"
+dir=$(dirname $(realpath $0))
+script="$dir/$1.py"
 
 cat <<END >"$script"
 #!/usr/bin/python3
@@ -11,9 +12,9 @@ import sys, re, fileinput
 import glob, fnmatch, os, os.path, tempfile, shutil
 import time, datetime, sqlite3, json
 
-# import tweepy
-
 from boot import api
+
+from TwitterAPI import TwitterRestPager as TP
 
 
 END
