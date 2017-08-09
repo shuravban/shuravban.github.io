@@ -29,3 +29,12 @@ tags:   web jekyll
 
 [google-analytics-link]: https://analytics.google.com/analytics/web/provision?authuser=0#provision/SignUp/
 
+PS 
+
+1. ublock блокирует Гугл-аналитику, поэтому сам себя не видел.
+
+2. Не надо было городить самиздат - в теме по умолчанию (minima) предусмотрена возможность из коробки, достаточтно в _config.yml добавить 
+
+  google_analytics: TOKEN
+
+Токет, разумеется, взять у гугла.
