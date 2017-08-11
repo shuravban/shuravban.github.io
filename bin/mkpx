@@ -17,7 +17,10 @@ from boot import api
 from TwitterAPI import TwitterRestPager as TP
 
 
+
+if __name__ == '__main__':
+    pass
 END
 chmod +x "$script"
 
-vim + "$script" 
+vim +11 "$script" 
