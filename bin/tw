@@ -3,6 +3,7 @@
 # sorry
 from boot import api
 
+from TwitterAPI import TwitterRestPager
 import argparse
 import json
 import sys
@@ -21,25 +22,41 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Request any Twitter Streaming or REST API endpoint')
     parser.add_argument(
-        '-endpoint',
+        '-e', '--endpoint',
         metavar='ENDPOINT',
         type=str,
         help='Twitter endpoint',
         required=True)
     parser.add_argument(
-        '-parameters',
+        '-p', '--params',
         metavar='NAME_VALUE',
         type=str,
         help='parameter NAME=VALUE',
         nargs='+')
+    parser.add_argument(
+        '-i', '--iter',
+        action='store_true',
+        default=False,
+        help='returns array of objects'
+    )
     args = parser.parse_args()
 
     try:
-        params = _to_dict(args.parameters)
+        params = _to_dict(args.params)
 
-        response = api.request(args.endpoint, params)
+        if args.iter:
+#            rst = []
+#            pager = TwitterRestPager(api, args.endpoint, params)
+#            it = pager.get_iterator()
+#
+#            for item in it:
+#                rst.add(item)
+#            print(json.dumps(rst, ensure_ascii=False))
+            print('TODO')
+        else:
+            response = api.request(args.endpoint, params)
+            print(response.text)
 
-        print(response.text)
     except KeyboardInterrupt:
         print('Terminated by user')
 
