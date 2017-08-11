@@ -16,6 +16,13 @@ from boot import api
 
 from TwitterAPI import TwitterRestPager as TP
 
+PROGNAME = os.path.basename(__file__)
+
+def usage(status=0):
+    print('''
+Usage: %s
+''' % PROGNAME)
+    
 
 
 if __name__ == '__main__':
@@ -23,4 +30,4 @@ if __name__ == '__main__':
 END
 chmod +x "$script"
 
-vim +11 "$script" 
+vim +19 "$script" 
