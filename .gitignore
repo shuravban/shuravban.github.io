@@ -4,6 +4,6 @@ _site
 .jekyll-metadata
 .*.swp
 __pycache__
-db/.*
-scripts/.*
+db/*
+scripts/*
 tmp/
