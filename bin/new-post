@@ -1,5 +1,9 @@
 #!/bin/sh
 
+USAGE="Usage: $(basename $0) TITLE [TAG(s)]"
+
+[ $# = 0 ] && echo $USAGE >&2 && exit 1
+
 posts=$(dirname $(dirname $(realpath "$0")))/_posts
 
 date=$(date +%F)
