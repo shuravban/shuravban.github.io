@@ -1,0 +1,54 @@
+#!/usr/bin/ruby -w
+
+# Get description and command, execute command, puts
+# description as the first line and the result of the command
+# to the file with the current datetime name in LOG_DIR
+
+DB_DIR=ENV['HOME'] + '/work/shuravban.github.io/db'
+LOG_DIR=DB_DIR + '/log'
+
+def die(msg, code=1)
+  $stderr.puts msg
+  exit code
+end
+
+die "LOG_DIR: #{LOG_DIR} do not exist" if not File.directory? LOG_DIR
+
+USAGE = <<END
+Usage: #{File.basename $0} [DESCRIPTION] COMMAND
+END
+
+def usage(code=0)
+  out = $stderr
+  if code.zero?
+    out = $stdin
+  end
+  out.puts USAGE
+  exit code
+end
+
+usage 1 if ARGV.size.zero? or ARGV.size > 2
+
+if ARGV.size == 1
+  $stderr.puts "'#{ARGV[0]}' is interpreted as a command and description" 
+  desc = "COMMAND: #{ARGV[0]}"
+else
+  desc = ARGV.shift 
+end
+
+command = ARGV[0]
+
+begin
+  rst = `#{command}`
+  raise if rst == ''
+rescue
+  puts "\nThe command: '#{command}' failed"
+  exit 1
+end
+
+time = Time.now.strftime '%Y%m%d-%H%M%S'
+File.open(LOG_DIR + "/#{time}", "w") do |f|
+  f.puts desc
+  f.puts rst
+  `cd #{LOG_DIR} && ln -f -s #{time} last`
+end
