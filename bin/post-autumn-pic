@@ -1,0 +1,85 @@
+#!/bin/sh
+TWITTER_USER=andyazu0
+echo andyazu0
+
+setup() {
+    USER=`realpath $0 | sed 's!/home/\([^/]*\)/.*!\1!'`
+    HOME=/home/$USER
+
+    APPDIR=$HOME/proj/tw/autumn/posts
+    PICSDIR=$APPDIR/pics
+    LISTPICS=$APPDIR/pics.list
+    DATESTAMP=$APPDIR/datestamp
+
+    # Sleeping before the next try
+    #SEQ='60 200 600'
+    SEQ='1 2 4'
+
+    DATE_COMMAND='date +%F'
+
+    # Save info about sleeping
+    LOG=
+
+    [ -d "$APPDIR" ] || { 
+        echo "APPDIR: '$APPDIR' does not exist." >&2
+        exit 1
+    }
+
+    [ $DEBUG ] && echo "Setup done. APPDIR: $APPDIR"
+}
+
+isrun() {
+    [ $DEBUG ] && echo Today: $($DATE_COMMAND) && return 1
+
+    local day=`$DATE_COMMAND`
+    if [ "$day" = "$(cat $DATESTAMP 2>/dev/null)" ]; then
+        return 0
+    fi
+    return 1
+}
+
+
+update_status() {
+    local file=$(head -1 $LISTPICS)
+    t update '#Autumn #Осень' -f $PICSDIR/$file
+}
+
+prepare_next() {
+    [ $DEBUG ] && echo prepare_next
+    sed -i '1d' $LISTPICS
+}
+
+job () {
+    # main task
+
+    local old_user=$(t accounts | grep active -B1 | head -1)
+    [ $DEBUG ] && echo $old_user
+    t set active $TWITTER_USER
+    update_status
+    exit_code=$?
+    [ $exit_code = 0 ] && prepare_next    
+    t set active $old_user
+    return $exit_code
+}
+
+main() {
+    # driver
+    [ $DEBUG ] && echo Enter the main procedure.
+    for i in $SEQ; do
+        [ $DEBUG ] && echo "Running loop in the main routine"
+        if job; then
+            echo `$DATE_COMMAND` >$DATESTAMP
+            return 0
+        else
+            sleep $i
+            LOG="$LOG\nSleeping $i"
+        fi
+    done
+}
+
+! [ $DEBUG ] && exec >/dev/null 2>&1
+
+setup
+isrun && exit 0
+main
+[ "$DEBUG" ] && echo "LOG: $LOG"
