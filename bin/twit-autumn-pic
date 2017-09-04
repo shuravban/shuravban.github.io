@@ -1,6 +1,6 @@
 #!/bin/sh
-TWITTER_USER=andyazu0
-echo andyazu0
+DEBUG=1
+TWITTER_USER=XXX
 
 setup() {
     USER=`realpath $0 | sed 's!/home/\([^/]*\)/.*!\1!'`
