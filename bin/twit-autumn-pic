@@ -1,6 +1,10 @@
 #!/bin/sh
-DEBUG=1
-TWITTER_USER=XXX
+# DEBUG=1
+TWITTER_USER=$1
+
+# more human
+# TODO but /bin/sh does not know about $RANDOM
+# sleep $(($RANDOM%600))
 
 setup() {
     USER=`realpath $0 | sed 's!/home/\([^/]*\)/.*!\1!'`

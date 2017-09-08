@@ -1,0 +1,86 @@
+#!/bin/sh
+OUT=/dev/null
+[ "$DEBUG" ] && OUT=/dev/tty
+
+USAGE="Usage: $(basename $0) USER T_COMMAND"
+
+COMMAND=/usr/local/bin/t
+
+LOCK=/var/tmp/$(basename $0)
+
+USER=
+OLD_USER=
+
+# sleeping before the next try
+SEQ='0 1 2 4 8 16'
+
+STATUS=0
+
+usage() {
+    local code=0
+    if [ $# != 0 ]; then        # with errorcode
+        echo "$USAGE" >&2
+        code=$1
+    else
+        echo "$USAGE"
+    fi
+    exit $code
+}
+
+die() {
+    echo "$*" >&2
+    exit 1
+}
+
+warn() {
+    echo "$@" >&2
+}
+
+debug() {
+    [ "$DEBUG" ] && echo "$*"
+}
+
+t_set() {
+    OLD_USER=$(t accounts | grep active -B1 | head -1)
+    t set active $USER >$OUT
+}
+
+t_restore() {
+    t set active $OLD_USER >$OUT
+}
+
+
+# main
+debug $#
+[ $# -lt 2 ] && usage 1
+
+USER=$1
+shift
+debug $USER
+
+[ "$1" = t ] && shift
+
+debug $COMMAND
+
+if ( set -o noclobber; echo "$$" > "$LOCK") 2> /dev/null; then
+
+        trap 't_restore; rm -f "$LOCK"; exit 1' INT TERM
+        t_set
+
+        for i in $SEQ; do
+            debug Sleeping $i
+            sleep $i
+            $COMMAND "$@"
+            STATUS=$?
+            [ "$STATUS" = 0 ] && break
+        done
+
+        t_restore
+        # clean up after yourself, and release your trap
+        rm -f "$LOCK"
+        trap - INT TERM EXIT
+else
+        echo "Lock Exists: $LOCK owned by $(cat $LOCK)"
+fi
+
+exit $STATUS
