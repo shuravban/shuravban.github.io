@@ -3,8 +3,15 @@
 TWITTER_USER=$1
 
 # more human
-# TODO but /bin/sh does not know about $RANDOM
-# sleep $(($RANDOM%600))
+# but /bin/sh does not know about $RANDOM
+random() {
+  awk -vM=$1 '
+    BEGIN {
+        srand()
+        printf("%d\n", rand()*M)
+    }'
+}
+sleep $(random 1000)
 
 setup() {
     USER=`realpath $0 | sed 's!/home/\([^/]*\)/.*!\1!'`
