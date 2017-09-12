@@ -1,4 +1,13 @@
 #!/bin/sh
+
+# EVERYTHING IS NOT COMPLETED!
+# Wrapper for `t` 
+# Add
+# 1. User
+# 2. Lock for `t` 
+# 3. Repeated tries
+
+
 OUT=/dev/null
 [ "$DEBUG" ] && OUT=/dev/tty
 
