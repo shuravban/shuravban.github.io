@@ -73,6 +73,7 @@ job () {
     return $exit_code
 }
 
+# TODO WRONG LOGIC - wrong exit code after loop if the final failure
 main() {
     # driver
     [ $DEBUG ] && echo Enter the main procedure.
