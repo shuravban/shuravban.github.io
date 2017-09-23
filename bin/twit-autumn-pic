@@ -2,17 +2,6 @@
 # DEBUG=1
 TWITTER_USER=$1
 
-# more human
-# but /bin/sh does not know about $RANDOM
-random() {
-  awk -vM=$1 '
-    BEGIN {
-        srand()
-        printf("%d\n", rand()*M)
-    }'
-}
-sleep $(random 1000)
-
 setup() {
     USER=`realpath $0 | sed 's!/home/\([^/]*\)/.*!\1!'`
     HOME=/home/$USER
@@ -93,5 +82,17 @@ main() {
 
 setup
 isrun && exit 0
+
+# more human
+# but /bin/sh does not know about $RANDOM
+random() {
+  awk -vM=$1 '
+    BEGIN {
+        srand()
+        printf("%d\n", rand()*M)
+    }'
+}
+sleep $(random 1000)
+
 main
 [ "$DEBUG" ] && echo "LOG: $LOG"
